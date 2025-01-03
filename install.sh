@@ -16,13 +16,15 @@ sudo pacman-key --add /tmp/sw-lin-public.key || error_exit "Failed to add key to
 sudo pacman-key --lsign-key aidanml05@gmail.com || error_exit "Failed to locally sign key"
 rm /tmp/sw-lin-public.key
 
-# Add repository to pacman.conf if not already present
-if ! grep -q "\[sw-lin-public\]" /etc/pacman.conf; then
-    echo "Adding repository to pacman.conf..."
-    echo -e "\n[sw-lin-public]" | sudo tee -a /etc/pacman.conf
-    echo "SigLevel = Optional TrustAll" | sudo tee -a /etc/pacman.conf
-    echo "Server = https://raw.githubusercontent.com/Ogyeet10/sw-lin-public-repo/main/\$arch" | sudo tee -a /etc/pacman.conf
-fi
+# Remove any existing sw-lin-public configuration
+echo "Checking for existing repository configuration..."
+sudo sed -i '/\[sw-lin-public\]/,+2d' /etc/pacman.conf
+
+# Add repository to pacman.conf
+echo "Adding repository to pacman.conf..."
+echo -e "\n[sw-lin-public]" | sudo tee -a /etc/pacman.conf
+echo "SigLevel = Optional TrustAll" | sudo tee -a /etc/pacman.conf
+echo "Server = https://raw.githubusercontent.com/Ogyeet10/sw-lin-public-repo/main/\$arch" | sudo tee -a /etc/pacman.conf
 
 # Update package database and install
 echo "Updating package database..."
