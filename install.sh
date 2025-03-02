@@ -22,7 +22,7 @@ sudo sed -i '/\[sw-lin-public\]/,+2d' /etc/pacman.conf
 
 # Add repository to pacman.conf
 echo "Adding repository to pacman.conf..."
-echo -e "\n[Extra2]" | sudo tee -a /etc/pacman.conf
+echo -e "\n[sw-lin-public]" | sudo tee -a /etc/pacman.conf
 echo "SigLevel = Optional TrustAll" | sudo tee -a /etc/pacman.conf
 echo "Server = https://raw.githubusercontent.com/Ogyeet10/sw-lin-public-repo/main/\$arch" | sudo tee -a /etc/pacman.conf
 
