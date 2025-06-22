@@ -44,25 +44,16 @@ if pacman -Qi starware >/dev/null 2>&1; then
     sudo systemctl enable starware.service || error_exit "Failed to enable system service"
     sudo systemctl start starware.service || error_exit "Failed to start system service"
     
-    # Enable user service globally (for all users)
-    echo "Enabling user service globally..."
-    sudo systemctl --global enable starware-user.service || error_exit "Failed to enable user service globally"
-    
-    # Try to enable user service for current user if in a user session
-    if [ -n "$DISPLAY" ] && [ -n "$USER" ]; then
-        echo "Enabling user service for current user session..."
-        systemctl --user enable starware-user.service 2>/dev/null || echo "Note: User service will be enabled on next login"
-        systemctl --user start starware-user.service 2>/dev/null || echo "Note: User service will start on next graphical login"
-    fi
+    # Note: User agents now auto-start via XDG autostart (no manual enabling needed)
     
     echo ""
     echo "Setup complete!"
     echo "System service: starware.service (enabled and started)"
-    echo "User service: starware-user.service (enabled globally for all users)"
+    echo "User agents: Auto-start via XDG autostart (/etc/xdg/autostart/starware-user.desktop)"
     echo ""
     echo "User agents will automatically start when users log into graphical sessions."
     echo "To check system service status: sudo systemctl status starware.service"
-    echo "To check user service status: systemctl --user status starware-user.service"
+    echo "To manually control user agents: systemctl --user start/stop starware-user.service"
     
 else
     error_exit "Installation verification failed"
